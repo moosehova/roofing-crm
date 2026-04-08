@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoofPro CRM | California Roofing Operations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .nav-active {
+            background-color: rgb(37 99 235);
+            color: #fff;
+            box-shadow: 0 10px 15px -3px rgba(191, 219, 254, 0.8), 0 4px 6px -4px rgba(191, 219, 254, 0.8);
+        }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-72 bg-white border-r border-slate-200 p-6 hidden lg:flex flex-col">
+            <div class="mb-10 px-2">
+                <div class="flex items-center space-x-3 mb-1">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                        <i class="fas fa-home-alt"></i>
+                    </div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-800">RoofPro <span class="text-blue-600 italic">CRM</span></h1>
+                </div>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest ml-11">Enterprise Suite</p>
+            </div>
+
+            <nav class="flex-1 space-y-2">
+                <button onclick="switchView('leads')" id="btn-leads" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition nav-active text-white">
+                    <i class="fas fa-address-book w-5"></i> <span class="font-semibold">Lead Manager</span>
+                </button>
+                <button onclick="switchView('estimates')" id="btn-estimates" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                    <i class="fas fa-file-invoice-dollar w-5"></i> <span class="font-semibold">Estimate Engine</span>
+                </button>
+                <button onclick="switchView('schedule')" id="btn-schedule" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                    <i class="fas fa-calendar-check w-5"></i> <span class="font-semibold">Service Schedule</span>
+                </button>
+                <button onclick="switchView('payroll')" id="btn-payroll" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                    <i class="fas fa-calculator w-5"></i> <span class="font-semibold">Payroll Tracker</span>
+                </button>
+            </nav>
+
+            <div class="mt-auto bg-slate-900 rounded-2xl p-4 text-white">
+                <p class="text-xs text-slate-400 mb-1">Status</p>
+                <p class="text-sm font-bold flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Google Workspace Sync</p>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full relative">
+            
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 px-8 flex justify-between items-center sticky top-0 z-10">
+                <h2 id="view-title" class="text-lg font-bold text-slate-800 uppercase tracking-tight">Lead Manager</h2>
+                <div class="flex items-center space-x-6">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold">Admin Portal</p>
+                        <p class="text-[10px] text-blue-600 font-bold uppercase">California Hub</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 border-2 border-white shadow-md"></div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-6 md:p-10">
+                
+                <section id="view-leads" class="view-section active animate-in fade-in duration-500">
+                    <div class="flex justify-between items-end mb-8">
+                        <div>
+                            <h3 class="text-3xl font-extrabold text-slate-900 italic">Pipeline.</h3>
+                            <p class="text-slate-500 text-sm">Drag-and-drop workflow for roofing sales.</p>
+                        </div>
+                        <button onclick="openLeadModal()" class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg">+ Add New Lead</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-2">New Lead</h4>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold uppercase">Shingle</span>
+                                    <button onclick="deleteLead(event, this)" class="text-slate-300 hover:text-red-500 transition text-xs">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <p class="font-bold mt-2 text-slate-800">Johnson Residence</p>
+                                <p class="text-xs text-slate-400 mt-1"><i class="fas fa-map-marker-alt"></i> Malibu, CA</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-2">Contacted</h4>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 italic opacity-60 italic text-sm text-slate-400">No active leads...</div>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black text-blue-500 uppercase tracking-widest border-b border-blue-200 pb-2">Estimate Sent</h4>
+                            <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-blue-600">
+                                <span class="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold uppercase">Urgent</span>
+                                <p class="font-bold mt-2 text-slate-800">Coastal Rentals LLC</p>
+                                <p class="text-xs text-slate-400 mt-1 font-bold text-blue-600">$18,450.00</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black text-green-500 uppercase tracking-widest border-b border-green-200 pb-2">Closed</h4>
+                            <div class="bg-green-50 p-5 rounded-2xl border border-green-100 text-center">
+                                <p class="text-xs font-bold text-green-700 uppercase">Monthly Goal: 85%</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-estimates" class="view-section animate-in slide-in-from-bottom-4 duration-500">
+                    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden">
+                        <div class="bg-slate-900 p-8 text-white flex justify-between items-center">
+                            <div>
+                                <h3 class="text-2xl font-bold">Estimate Engine</h3>
+                                <p class="text-slate-400 text-xs mt-1">Direct Google Docs Template Integration</p>
+                            </div>
+                            <i class="fas fa-file-contract text-4xl text-blue-500 opacity-50"></i>
+                        </div>
+                        <div class="p-10 space-y-8">
+                            <div class="grid grid-cols-2 gap-8">
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 block">Customer Name</label>
+                                    <input type="text" id="custName" value="Laguna Beach Project" class="w-full bg-slate-50 p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none font-semibold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2 block">Service Date</label>
+                                    <input type="date" id="projDate" class="w-full bg-slate-50 p-4 rounded-xl border border-slate-200 outline-none font-semibold">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-6 bg-slate-50 p-6 rounded-2xl border border-dashed border-slate-300">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Squares</label>
+                                        <input type="number" id="squares" value="30" oninput="calcTotal()" class="w-full p-3 rounded-lg border focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Material / Square</label>
+                                        <input type="number" id="matCost" value="210" oninput="calcTotal()" class="w-full p-3 rounded-lg border focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Labor / Square</label>
+                                        <input type="number" id="labCost" value="140" oninput="calcTotal()" class="w-full p-3 rounded-lg border focus:border-blue-500 outline-none">
+                                    </div>
+                                </div>
+                                <div class="bg-blue-50 rounded-2xl border border-blue-100 p-6 flex items-center justify-between">
+                                    <div>
+                                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Grand Total</p>
+                                        <p id="grandTotal" class="text-3xl font-extrabold text-slate-900">$10,500.00</p>
+                                    </div>
+                                    <button class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="view-schedule" class="view-section animate-in slide-in-from-bottom-4 duration-500">
+                        <div class="max-w-5xl mx-auto">
+                            <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                                <h3 class="text-2xl font-bold text-slate-900">Service Schedule</h3>
+                                <p class="text-slate-500 text-sm mt-1">Coordinate field crews and upcoming roofing jobs.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Today</p>
+                                    <p class="font-bold text-slate-800">Lakeview Apartments</p>
+                                    <p class="text-sm text-slate-500">Tear-off and prep - Crew A - 8:00 AM</p>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Tomorrow</p>
+                                    <p class="font-bold text-slate-800">Hillside Residence</p>
+                                    <p class="text-sm text-slate-500">Underlayment and flashing - Crew C - 9:30 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="view-payroll" class="view-section animate-in slide-in-from-bottom-4 duration-500">
+                        <div class="max-w-5xl mx-auto">
+                            <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                                <h3 class="text-2xl font-bold text-slate-900">Payroll Tracker</h3>
+                                <p class="text-slate-500 text-sm mt-1">Review labor totals and weekly crew payouts.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">Crew A</p>
+                                    <p class="text-2xl font-extrabold text-slate-900">$4,280</p>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">Crew B</p>
+                                    <p class="text-2xl font-extrabold text-slate-900">$3,910</p>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">Crew C</p>
+                                    <p class="text-2xl font-extrabold text-slate-900">$4,060</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+
+        <div id="leadModal" class="fixed inset-0 bg-slate-900/80 hidden flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+            <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl relative animate-in zoom-in duration-200">
+                <button onclick="closeLeadModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black text-xl">x</button>
+
+                <h3 class="text-xl font-bold mb-1">New Intake</h3>
+                <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-6">Roofing Lead Entry</p>
+
+                <form id="leadForm" class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">Client Name</label>
+                        <input type="text" id="newLeadName" required class="w-full bg-slate-50 p-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">Location (City)</label>
+                        <input type="text" id="newLeadLoc" placeholder="e.g. Malibu, CA" required class="w-full bg-slate-50 p-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">Roof Type</label>
+                        <select id="newLeadType" class="w-full bg-slate-50 p-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                            <option>Shingle</option>
+                            <option>Tile</option>
+                            <option>Metal</option>
+                            <option>Flat/TPO</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-blue-600 transition-colors mt-4">
+                        Save to Pipeline
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function switchView(viewId) {
+                console.log("Switching to:", viewId);
+
+                // 1. Hide all sections
+                const sections = document.querySelectorAll('.view-section');
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // 2. Show the selected section
+                const activeSection = document.getElementById('view-' + viewId);
+                if (activeSection) {
+                    activeSection.style.display = 'block';
+                }
+
+                // 3. Update title
+                const titles = {
+                    leads: 'Lead Manager',
+                    estimates: 'Estimate Engine',
+                    schedule: 'Service Schedule',
+                    payroll: 'Payroll Tracker'
+                };
+                document.getElementById('view-title').innerText = titles[viewId];
+
+                // 4. Update button colors
+                document.querySelectorAll('.nav-item').forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'text-white', 'shadow-lg');
+                    btn.classList.add('text-slate-500');
+                });
+
+                const activeBtn = document.getElementById('btn-' + viewId);
+                if (activeBtn) {
+                    activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
+                    activeBtn.classList.remove('text-slate-500');
+                }
+            }
+
+            // Modal controls
+            function openLeadModal() {
+                document.getElementById('leadModal').classList.remove('hidden');
+            }
+
+            function closeLeadModal() {
+                document.getElementById('leadModal').classList.add('hidden');
+                document.getElementById('leadForm').reset();
+            }
+
+            // Function to delete a card
+            function deleteLead(event, element) {
+                event.stopPropagation();
+                if (confirm('Archive this lead?')) {
+                    element.parentElement.parentElement.remove();
+                }
+            }
+
+            // Form submission logic
+            document.getElementById('leadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // 1. Get values
+                const name = document.getElementById('newLeadName').value;
+                const loc = document.getElementById('newLeadLoc').value;
+                const type = document.getElementById('newLeadType').value;
+
+                // 2. Create the HTML for the new card
+                const leadContainer = document.querySelector('#view-leads .grid > div:first-child');
+                const newCard = document.createElement('div');
+                newCard.className = 'bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer animate-in slide-in-from-top-2 duration-300 mb-2';
+
+                newCard.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold uppercase">${type}</span>
+                        <button onclick="deleteLead(event, this)" class="text-slate-300 hover:text-red-500 transition text-xs">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <p class="font-bold mt-2 text-slate-800">${name}</p>
+                    <p class="text-xs text-slate-400 mt-1"><i class="fas fa-map-marker-alt"></i> ${loc}</p>
+                `;
+
+                // 3. Add to the New Lead column
+                leadContainer.appendChild(newCard);
+
+                // 4. Close and reset
+                closeLeadModal();
+
+                console.log('New lead added to system.');
+            });
+
+            // Initialize date and estimate total
+            document.getElementById('projDate').valueAsDate = new Date();
+
+            function calcTotal() {
+                const sq = parseFloat(document.getElementById('squares').value) || 0;
+                const mat = parseFloat(document.getElementById('matCost').value) || 0;
+                const lab = parseFloat(document.getElementById('labCost').value) || 0;
+                const total = (sq * mat) + (sq * lab);
+                document.getElementById('grandTotal').innerText = `$${total.toLocaleString()}.00`;
+            }
+
+            calcTotal();
+            switchView('leads');
+        </script>
+    </body>
+</html>
