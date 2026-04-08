@@ -72,6 +72,9 @@
                 <button onclick="switchView('finance')" id="btn-finance" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
                     <i class="fas fa-chart-line w-5"></i> <span class="font-semibold">Financial Insights</span>
                 </button>
+                <button onclick="switchView('analytics')" id="btn-analytics" class="nav-item w-full flex items-center space-x-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                    <i class="fas fa-chart-line w-5"></i> <span class="font-semibold">Financial Analytics</span>
+                </button>
             </nav>
 
             <div class="mt-auto bg-slate-900 rounded-2xl p-4 text-white">
@@ -264,6 +267,50 @@
                         </div>
                     </section>
 
+                    <section id="view-analytics" class="view-section animate-in fade-in duration-500">
+                        <div class="mb-8">
+                            <h3 class="text-3xl font-extrabold text-slate-900 italic">Insights.</h3>
+                            <p class="text-slate-500 text-sm">Real-time revenue tracking and margin analysis.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Monthly Revenue</p>
+                                <h4 class="text-2xl font-black text-blue-600">$42,850.00</h4>
+                                <div class="w-full bg-slate-100 h-1 mt-3 rounded-full overflow-hidden">
+                                    <div class="bg-blue-600 h-full w-[70%]"></div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Material Expenses</p>
+                                <h4 class="text-2xl font-black text-orange-500">$12,400.00</h4>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Net Profit Margin</p>
+                                <h4 class="text-2xl font-black text-green-600">34.5%</h4>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                            <div class="p-6 border-b bg-slate-50 flex justify-between items-center">
+                                <span class="font-bold text-sm">Recent Transactions</span>
+                                <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold uppercase">Live from Sheets</span>
+                            </div>
+                            <table class="w-full text-left text-sm">
+                                <tr class="border-b text-slate-400 text-[10px] uppercase font-black">
+                                    <th class="p-4">Project</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-right">Amount</th>
+                                </tr>
+                                <tr class="border-b hover:bg-slate-50 transition">
+                                    <td class="p-4 font-bold">Malibu Shingle Job</td>
+                                    <td class="p-4"><span class="text-green-500 font-bold">Paid</span></td>
+                                    <td class="p-4 text-right font-black">$12,000.00</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+
                 </div>
             </main>
         </div>
@@ -289,6 +336,9 @@
                     </button>
                     <button onclick="switchView('finance'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-50">
                         <i class="fas fa-chart-line"></i> <span>Financials</span>
+                    </button>
+                    <button onclick="switchView('analytics'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-50">
+                        <i class="fas fa-chart-line"></i> <span>Analytics</span>
                     </button>
                 </nav>
             </div>
@@ -404,7 +454,8 @@
                     estimates: 'Estimate Engine',
                     schedule: 'Service Schedule',
                     payroll: 'Payroll Tracker',
-                    finance: 'Financial Insights'
+                    finance: 'Financial Insights',
+                    analytics: 'Financial Analytics'
                 };
                 document.getElementById('view-title').innerText = titles[viewId];
 
