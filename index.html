@@ -155,7 +155,7 @@
                                         <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Grand Total</p>
                                         <p id="grandTotal" class="text-3xl font-extrabold text-slate-900">$10,500.00</p>
                                     </div>
-                                    <button class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
+                                    <button onclick="openPdfModal()" class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
                                 </div>
                             </div>
                         </div>
@@ -264,6 +264,62 @@
             </div>
         </div>
 
+        <div id="pdfModal" class="fixed inset-0 bg-slate-900/80 hidden flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+            <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl relative overflow-hidden">
+                <button onclick="printEstimate()" class="absolute top-4 right-16 bg-blue-600 text-white px-4 py-1 rounded-lg text-xs font-bold hover:bg-blue-700 transition">
+                    <i class="fas fa-print mr-2"></i> Print / Save PDF
+                </button>
+                <button onclick="closePdfModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black text-xl">x</button>
+
+                <div class="p-8 border-b border-slate-200">
+                    <h3 class="text-2xl font-extrabold text-slate-900">RoofPro Estimate</h3>
+                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mt-1">Prepared for California Roofing Operations</p>
+                </div>
+
+                <div id="pdfEstimateContent" class="p-8 space-y-6">
+                    <div class="grid grid-cols-2 gap-6 text-sm">
+                        <div>
+                            <p class="text-slate-400 uppercase text-[10px] font-black tracking-wider">Customer</p>
+                            <p id="pdfCustName" class="font-bold text-slate-800 mt-1">Laguna Beach Project</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 uppercase text-[10px] font-black tracking-wider">Service Date</p>
+                            <p id="pdfServiceDate" class="font-bold text-slate-800 mt-1">-</p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-slate-200 overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-wider">
+                                <tr>
+                                    <th class="text-left p-3">Item</th>
+                                    <th class="text-right p-3">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-800">
+                                <tr class="border-t border-slate-200">
+                                    <td class="p-3 font-semibold">Squares</td>
+                                    <td id="pdfSquares" class="p-3 text-right">0</td>
+                                </tr>
+                                <tr class="border-t border-slate-200">
+                                    <td class="p-3 font-semibold">Material / Square</td>
+                                    <td id="pdfMat" class="p-3 text-right">$0.00</td>
+                                </tr>
+                                <tr class="border-t border-slate-200">
+                                    <td class="p-3 font-semibold">Labor / Square</td>
+                                    <td id="pdfLab" class="p-3 text-right">$0.00</td>
+                                </tr>
+                                <tr class="border-t border-slate-200 bg-blue-50">
+                                    <td class="p-3 font-black">Grand Total</td>
+                                    <td id="pdfTotal" class="p-3 text-right font-black">$0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
             function switchView(viewId) {
                 console.log("Switching to:", viewId);
@@ -310,6 +366,53 @@
             function closeLeadModal() {
                 document.getElementById('leadModal').classList.add('hidden');
                 document.getElementById('leadForm').reset();
+            }
+
+            function openPdfModal() {
+                const sq = parseFloat(document.getElementById('squares').value) || 0;
+                const mat = parseFloat(document.getElementById('matCost').value) || 0;
+                const lab = parseFloat(document.getElementById('labCost').value) || 0;
+                const total = (sq * mat) + (sq * lab);
+                const customer = document.getElementById('custName').value || 'Walk-in Client';
+                const date = document.getElementById('projDate').value || '-';
+
+                document.getElementById('pdfCustName').innerText = customer;
+                document.getElementById('pdfServiceDate').innerText = date;
+                document.getElementById('pdfSquares').innerText = sq.toString();
+                document.getElementById('pdfMat').innerText = `$${mat.toFixed(2)}`;
+                document.getElementById('pdfLab').innerText = `$${lab.toFixed(2)}`;
+                document.getElementById('pdfTotal').innerText = `$${total.toLocaleString()}.00`;
+
+                document.getElementById('pdfModal').classList.remove('hidden');
+            }
+
+            function closePdfModal() {
+                document.getElementById('pdfModal').classList.add('hidden');
+            }
+
+            function printEstimate() {
+                const modalContent = document.querySelector('#pdfModal > div').innerHTML;
+                const originalContent = document.body.innerHTML;
+
+                // 1. Temporarily replace body with only the estimate content
+                document.body.innerHTML = `
+                    <div style="padding: 40px; font-family: sans-serif;">
+                        ${modalContent}
+                    </div>
+                `;
+
+                // 2. Hide buttons inside the print view
+                const buttons = document.body.querySelectorAll('button');
+                buttons.forEach(btn => btn.style.display = 'none');
+
+                // 3. Trigger print
+                window.print();
+
+                // 4. Restore the original dashboard
+                document.body.innerHTML = originalContent;
+
+                // 5. Re-initialize listeners after replacing body content
+                window.location.reload();
             }
 
             function toggleMobileMenu() {
