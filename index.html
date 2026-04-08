@@ -17,40 +17,44 @@
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        /* Floating action button for mobile estimate generation */
+        /* Floating Action Button (FAB) */
         .fab-container {
             position: fixed;
-            bottom: 1.25rem;
-            right: 1.25rem;
-            z-index: 50;
-            display: none;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
             flex-direction: column;
             align-items: flex-end;
+            transition: all 0.3s ease;
         }
 
         .fab-button {
-            background-color: rgb(37 99 235);
-            color: #fff;
-            padding: 0.875rem 1rem;
-            border-radius: 1rem;
+            background-color: #2563eb;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            font-weight: 700;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            border: none;
+            cursor: pointer;
         }
 
-        .fab-button:hover {
-            transform: scale(1.05);
-            background-color: rgb(29 78 216);
+        .fab-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Hidden by default */
+        .fab-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
         }
 
         @media (max-width: 1023px) {
-            .fab-container {
-                display: flex;
-            }
-
             #view-estimates .estimate-generate-btn {
                 display: none;
             }
@@ -359,8 +363,8 @@
             </div>
         </div>
 
-        <div class="fab-container lg:hidden">
-            <button onclick="openPdfModal()" class="fab-button">
+        <div id="estimateFAB" class="fab-container fab-hidden lg:hidden">
+            <button onclick="showPDF()" class="fab-button">
                 <i class="fas fa-file-pdf text-xl"></i>
                 <span>Generate PDF</span>
             </button>
@@ -402,6 +406,16 @@
                     activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
                     activeBtn.classList.remove('text-slate-500');
                 }
+
+                // Show FAB only in Estimate Engine on mobile
+                const fab = document.getElementById('estimateFAB');
+                if (fab) {
+                    if (viewId === 'estimates') {
+                        fab.classList.remove('fab-hidden');
+                    } else {
+                        fab.classList.add('fab-hidden');
+                    }
+                }
             }
 
             // Modal controls
@@ -430,6 +444,10 @@
                 document.getElementById('pdfTotal').innerText = `$${total.toLocaleString()}.00`;
 
                 document.getElementById('pdfModal').classList.remove('hidden');
+            }
+
+            function showPDF() {
+                openPdfModal();
             }
 
             function closePdfModal() {
