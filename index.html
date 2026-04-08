@@ -17,48 +17,29 @@
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        /* Floating Action Button (FAB) */
-        .fab-container {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            transition: all 0.3s ease;
+        /* Centered Action Button */
+        .action-box {
+            position: relative;
+            padding-bottom: 2rem;
         }
 
-        .fab-button {
+        .center-action-btn {
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: #2563eb;
             color: white;
-            padding: 16px 24px;
-            border-radius: 16px;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+            z-index: 20;
+            white-space: nowrap;
             border: none;
             cursor: pointer;
         }
 
-        .fab-button:active {
-            transform: scale(0.95);
-        }
-
-        /* Hidden by default */
-        .fab-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px);
-        }
-
-        @media (max-width: 1023px) {
-            #view-estimates .estimate-generate-btn {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-slate-900">
@@ -193,12 +174,13 @@
                                         <input type="number" id="labCost" value="140" oninput="calcTotal()" class="w-full p-3 rounded-lg border focus:border-blue-500 outline-none">
                                     </div>
                                 </div>
-                                <div class="bg-blue-50 rounded-2xl border border-blue-100 p-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Grand Total</p>
-                                        <p id="grandTotal" class="text-3xl font-extrabold text-slate-900">$10,500.00</p>
-                                    </div>
-                                    <button onclick="openPdfModal()" class="estimate-generate-btn bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
+                                <div class="action-box bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-6">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase italic">Project Total</p>
+                                    <h4 id="grandTotal" class="text-4xl font-black text-slate-900 tracking-tighter mb-4">$10,500.00</h4>
+
+                                    <button onclick="showPDF()" class="center-action-btn">
+                                        <i class="fas fa-file-pdf mr-2"></i> Generate Proposal
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -363,13 +345,6 @@
             </div>
         </div>
 
-        <div id="estimateFAB" class="fab-container fab-hidden lg:hidden">
-            <button onclick="showPDF()" class="fab-button">
-                <i class="fas fa-file-pdf text-xl"></i>
-                <span>Generate PDF</span>
-            </button>
-        </div>
-
         <script>
             function switchView(viewId) {
                 console.log("Switching to:", viewId);
@@ -405,16 +380,6 @@
                 if (activeBtn) {
                     activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
                     activeBtn.classList.remove('text-slate-500');
-                }
-
-                // Show FAB only in Estimate Engine on mobile
-                const fab = document.getElementById('estimateFAB');
-                if (fab) {
-                    if (viewId === 'estimates') {
-                        fab.classList.remove('fab-hidden');
-                    } else {
-                        fab.classList.add('fab-hidden');
-                    }
                 }
             }
 
