@@ -16,6 +16,45 @@
         }
         .view-section { display: none; }
         .view-section.active { display: block; }
+
+        /* Floating action button for mobile estimate generation */
+        .fab-container {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 50;
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .fab-button {
+            background-color: rgb(37 99 235);
+            color: #fff;
+            padding: 0.875rem 1rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            font-weight: 700;
+        }
+
+        .fab-button:hover {
+            transform: scale(1.05);
+            background-color: rgb(29 78 216);
+        }
+
+        @media (max-width: 1023px) {
+            .fab-container {
+                display: flex;
+            }
+
+            #view-estimates .estimate-generate-btn {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-slate-900">
@@ -155,7 +194,7 @@
                                         <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Grand Total</p>
                                         <p id="grandTotal" class="text-3xl font-extrabold text-slate-900">$10,500.00</p>
                                     </div>
-                                    <button onclick="openPdfModal()" class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
+                                    <button onclick="openPdfModal()" class="estimate-generate-btn bg-blue-600 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Generate Proposal</button>
                                 </div>
                             </div>
                         </div>
@@ -318,6 +357,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="fab-container lg:hidden">
+            <button onclick="openPdfModal()" class="fab-button">
+                <i class="fas fa-file-pdf text-xl"></i>
+                <span>Generate PDF</span>
+            </button>
         </div>
 
         <script>
