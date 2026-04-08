@@ -56,7 +56,12 @@
         <main class="flex-1 flex flex-col h-full relative">
             
             <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 px-8 flex justify-between items-center sticky top-0 z-10">
-                <h2 id="view-title" class="text-lg font-bold text-slate-800 uppercase tracking-tight">Lead Manager</h2>
+                <div class="flex items-center">
+                    <button onclick="toggleMobileMenu()" class="lg:hidden mr-4 text-slate-600 text-xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="view-title" class="text-lg font-bold text-slate-800 uppercase tracking-tight">Lead Manager</h2>
+                </div>
                 <div class="flex items-center space-x-6">
                     <div class="text-right hidden sm:block">
                         <p class="text-sm font-bold">Admin Portal</p>
@@ -204,6 +209,29 @@
             </main>
         </div>
 
+        <div id="mobileMenu" class="fixed inset-0 bg-slate-900/50 z-50 hidden lg:hidden backdrop-blur-sm">
+            <div class="w-72 bg-white h-full p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-10">
+                    <h1 class="text-xl font-bold text-slate-800">RoofPro <span class="text-blue-600">CRM</span></h1>
+                    <button onclick="toggleMobileMenu()" class="text-slate-400 text-2xl">x</button>
+                </div>
+                <nav class="space-y-4">
+                    <button onclick="switchView('leads'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl bg-blue-600 text-white font-bold">
+                        <i class="fas fa-address-book"></i> <span>Leads</span>
+                    </button>
+                    <button onclick="switchView('estimates'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-50">
+                        <i class="fas fa-file-invoice-dollar"></i> <span>Estimates</span>
+                    </button>
+                    <button onclick="switchView('schedule'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-50">
+                        <i class="fas fa-calendar-check"></i> <span>Schedule</span>
+                    </button>
+                    <button onclick="switchView('payroll'); toggleMobileMenu()" class="w-full flex items-center space-x-3 p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-50">
+                        <i class="fas fa-calculator"></i> <span>Payroll</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
         <div id="leadModal" class="fixed inset-0 bg-slate-900/80 hidden flex items-center justify-center p-4 z-50 backdrop-blur-sm">
             <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl relative animate-in zoom-in duration-200">
                 <button onclick="closeLeadModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black text-xl">x</button>
@@ -282,6 +310,11 @@
             function closeLeadModal() {
                 document.getElementById('leadModal').classList.add('hidden');
                 document.getElementById('leadForm').reset();
+            }
+
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                menu.classList.toggle('hidden');
             }
 
             // Function to delete a card
